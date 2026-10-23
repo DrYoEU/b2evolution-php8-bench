@@ -1,0 +1,39 @@
+# b2evolution PHP 8.x porting bench — https://github.com/b2evolution/b2evolution tag 7.2.5
+# Layout (all paths relative to this file):
+#   ./src      git checkout of b2evolution (the tree you patch)
+#   ./overlay  your own site: conf/, media/, extra skins/ and plugins/ (never committed)
+#   ./db       *.sql.gz dump(s), loaded once on first start of the db container
+#   ./log      PHP error log (php-error.log) and Apache logs
+services:
+  db:
+    image: mariadb:10.11
+    environment:
+      MARIADB_ROOT_PASSWORD: bench-root
+      MARIADB_DATABASE: b2evolution
+      MARIADB_USER: b2evo
+      MARIADB_PASSWORD: bench
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./db:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      retries: 30
+
+  web:
+    build:
+      context: .
+      args:
+        PHP_VERSION: ${PHP_VERSION:-8.4}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${BENCH_PORT:-8090}:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./php/zz-bench.ini:/usr/local/etc/php/conf.d/zz-bench.ini:ro
+      - ./log:/var/log/bench
+
+volumes:
+  dbdata:

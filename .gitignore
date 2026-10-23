@@ -1,0 +1,6 @@
+# your site and runtime data never go to git
+/src/
+/overlay/
+/db/
+/log/
+/.env
