@@ -1,4 +1,4 @@
-ARG PHP_VERSION=8.4
+ARG PHP_VERSION=8.5
 FROM php:${PHP_VERSION}-apache
 # Extensions matching a typical b2evolution production host (gd, mysqli, mbstring, zip, intl, apcu, exif).
 # imap left out on purpose: removed from core in PHP 8.4, b2evolution only uses it for two optional features.

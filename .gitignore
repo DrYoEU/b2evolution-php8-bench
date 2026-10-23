@@ -4,3 +4,5 @@
 /db/
 /log/
 /.env
+*.tar.gz
+/patches/
