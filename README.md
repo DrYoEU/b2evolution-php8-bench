@@ -63,6 +63,6 @@ throws the database away, the next `up` reloads the dump (then run `bin/setup.sh
 
 ## What is NOT covered
 
-PHP `imap` (removed from core in 8.4; two optional b2evolution features), the installer
+The installer
 (`/install/`), XML-RPC clients, and whatever your own skins/plugins do — lint them with the loop
 above and watch the log while using them.
